@@ -13,6 +13,8 @@ main(int argc, char * argv[])
 {
   QApplication app(argc,argv);  
   MainWidget mainWidget;
+
+  mainWidget.setWindowTitle("This should override that");
  
   // Ask for the main widget (application main window) to show up.
   mainWidget.show();
