@@ -21,6 +21,7 @@ MainWidget::MainWidget()
   label->setGeometry(10,6,290,30);
   label->setFont(QFont("Arial",10,QFont::Bold));
 
+  //Question (d)
   newLineDisplay = new QLineEdit("",this);
   newLineDisplay->setGeometry(50,70,200,30);
   newLineDisplay->setReadOnly(true);
@@ -28,8 +29,12 @@ MainWidget::MainWidget()
   lineDisplay = new QLineEdit("",this);
   lineDisplay->setGeometry(50,110,200,30);
   lineDisplay->setAlignment(Qt::AlignHCenter);
+
+  //Question (c)
   lineDisplay->setReadOnly(true);
 
+
+  //Question (f)
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
   timer->start(1000);
@@ -84,9 +89,10 @@ void MainWidget::updateTime()
     timer->start(1000);
 }
 
+
+//Question (e)
 void MainWidget::mousePressEvent(QMouseEvent * e)
 {
-    //QString text("(%1, %2)");
     if(e->button() == Qt::RightButton) {
         newLineDisplay->setAlignment(Qt::AlignRight);
     } else if(e->button() == Qt::LeftButton) {
@@ -94,7 +100,6 @@ void MainWidget::mousePressEvent(QMouseEvent * e)
     } else {
         newLineDisplay->setAlignment(Qt::AlignHCenter);
     }
-    //newLineDisplay->setText(text.arg(e->x()).arg(e->y()));
 }
 
 void  MainWidget::mouseMoveEvent(QMouseEvent * e)
