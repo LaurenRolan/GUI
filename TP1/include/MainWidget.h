@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QTimeEdit>
 #include <iostream>
 #include "ColorWidget.h"
 
@@ -44,9 +45,17 @@ public slots:
    */ 
   void colorChanged(int r, int g, int b);
 
-private:
+  void updateTime();
 
+private:
   QLineEdit   *lineDisplay;	/**< A text field */
+  QLineEdit   *newLineDisplay;
+  QTimeEdit   *timeDisplay;
+  QTimer      *timer;
+
+protected:
+  void  mousePressEvent(QMouseEvent * e);
+  void  mouseMoveEvent(QMouseEvent * e);
 };
 
 #endif
