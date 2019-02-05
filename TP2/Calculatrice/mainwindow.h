@@ -18,6 +18,10 @@ public:
 
 private slots:
     void about();
+    void evaluate();
+    void writeOnScreen();
+    void clear();
+    void changeBase();
 
 private:
     Ui::MainWindow *ui;

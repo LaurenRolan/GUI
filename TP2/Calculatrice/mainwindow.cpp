@@ -134,6 +134,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mainLayout->addWidget(clear);
     mainLayout->addWidget(quit);
 
+
+
 }
 
 MainWindow::~MainWindow()
@@ -144,4 +146,25 @@ MainWindow::~MainWindow()
 void MainWindow::about() {
     QMessageBox::about(this, tr("A propos de Calculatrice"),
                 tr("Calculatrice<br/>(c) 2019 Lauren Rolan"));
+}
+
+
+void MainWindow::evaluate()
+{
+
+}
+
+void MainWindow::writeOnScreen()
+{
+
+}
+
+void MainWindow::clear()
+{
+
+}
+
+void MainWindow::changeBase()
+{
+
 }
