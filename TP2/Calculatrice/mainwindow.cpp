@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QPushButton>
+#include <QShortcut>
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -22,14 +23,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QAction * quitter = new QAction(tr("&Quitter"), fichier);
     QAction * aPropos = new QAction(tr("A &propos"), aide);
+    QAction * suffixe = new QAction(tr("Suffixe"), options);
 
     fichier->addAction(quitter);
     aide->addAction(aPropos);
+    suffixe->setCheckable(true);
+    options->addAction(suffixe);
 
     calcMenuBar->addMenu(fichier);
     calcMenuBar->addMenu(options);
     calcMenuBar->addMenu(aide);
 
+    showSuffix = false;
+
+    connect(suffixe, SIGNAL(triggered()), this, SLOT(toggleSuffix()));
     connect(aPropos, SIGNAL(triggered()), this, SLOT(about()));
     connect(quitter, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -172,11 +179,37 @@ void MainWindow::writeOnScreen(int index)
 {
     controller.command((Controller::ButtonID) index);
     screen->setText(controller.getText());
+    if(showSuffix) {
+        setSuffix();
+    }
 }
 
 void MainWindow::clearScreen()
 {
     screen->setText("");
+}
+
+void MainWindow::removeSuffix()
+{
+    screen->setText(controller.getText());
+}
+
+void MainWindow::setSuffix()
+{
+    int base = controller.base();
+    switch (base) {
+    case Controller::Bin:
+        screen->setText(controller.getText() + "b");
+        break;
+    case Controller::Hex:
+        screen->setText(controller.getText() + "h");
+        break;
+    case Controller::Dec:
+        screen->setText(controller.getText());
+        break;
+    default:
+        break;
+    }
 }
 
 void MainWindow::changeBase(QString base)
@@ -231,5 +264,18 @@ void MainWindow::changeBase(QString base)
         numbers->button(14)->setDisabled(false);
         numbers->button(15)->setDisabled(false);
         controller.setBase(Controller::Hex);
+    }
+    screen->setText(controller.getText());
+    if(showSuffix) {
+        setSuffix();
+    }
+}
+
+void MainWindow::toggleSuffix() {
+    showSuffix = !showSuffix;
+    if(showSuffix) {
+        setSuffix();
+    } else {
+        removeSuffix();
     }
 }

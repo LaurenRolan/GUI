@@ -24,12 +24,17 @@ private slots:
     void writeOnScreen(int index);
     void clearScreen();
     void changeBase(QString base);
+    void toggleSuffix();
 
 private:
     Ui::MainWindow *ui;
     QLineEdit * screen;
     QButtonGroup * numbers;
     Controller controller;
+    bool showSuffix;
+
+    void setSuffix();
+    void removeSuffix();
 };
 
 #endif // MAINWINDOW_H
