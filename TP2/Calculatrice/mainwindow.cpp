@@ -1,11 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "Controller.h"
 #include <QLayout>
 #include <QMessageBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
 #include <QPushButton>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     QLabel * calcLabel = new QLabel("Calculatrice");
-    QLineEdit * screen = new QLineEdit;
+    screen = new QLineEdit;
 
     screen->setReadOnly(true);
 
@@ -47,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     centralWidget()->setLayout(mainLayout);
 
     QGridLayout * keys = new QGridLayout(this);
-    QButtonGroup * numbers = new QButtonGroup(this);
+    numbers = new QButtonGroup(this);
     QPushButton * _0 = new QPushButton("0");
     QPushButton * _1 = new QPushButton("1");
     QPushButton * _2 = new QPushButton("2");
@@ -65,24 +67,26 @@ MainWindow::MainWindow(QWidget *parent) :
     QPushButton * _E = new QPushButton("E");
     QPushButton * _F = new QPushButton("F");
 
-    numbers->addButton(_0, 0);
-    numbers->addButton(_1, 1);
-    numbers->addButton(_2, 2);
-    numbers->addButton(_3, 3);
-    numbers->addButton(_4, 4);
-    numbers->addButton(_5, 5);
-    numbers->addButton(_6, 6);
-    numbers->addButton(_7, 7);
-    numbers->addButton(_8, 8);
-    numbers->addButton(_9, 9);
-    numbers->addButton(_A, 10);
-    numbers->addButton(_B, 11);
-    numbers->addButton(_C, 12);
-    numbers->addButton(_D, 13);
-    numbers->addButton(_E, 14);
-    numbers->addButton(_F, 15);
+    numbers->addButton(_0, Controller::Button_0);
+    numbers->addButton(_1, Controller::Button_1);
+    numbers->addButton(_2, Controller::Button_2);
+    numbers->addButton(_3, Controller::Button_3);
+    numbers->addButton(_4, Controller::Button_4);
+    numbers->addButton(_5, Controller::Button_5);
+    numbers->addButton(_6, Controller::Button_6);
+    numbers->addButton(_7, Controller::Button_7);
+    numbers->addButton(_8, Controller::Button_8);
+    numbers->addButton(_9, Controller::Button_9);
+    numbers->addButton(_A, Controller::Button_A);
+    numbers->addButton(_B, Controller::Button_B);
+    numbers->addButton(_C, Controller::Button_C);
+    numbers->addButton(_D, Controller::Button_D);
+    numbers->addButton(_E, Controller::Button_E);
+    numbers->addButton(_F, Controller::Button_F);
 
+    connect(numbers, SIGNAL(buttonClicked(int)), this, SLOT(writeOnScreen(int)));
 
+    QButtonGroup * modifiers = new QButtonGroup(this);
     QPushButton * _plus = new QPushButton("+");
     QPushButton * _minus = new QPushButton("-");
     QPushButton * _equals = new QPushButton("=");
@@ -90,10 +94,25 @@ MainWindow::MainWindow(QWidget *parent) :
     QPushButton * _div = new QPushButton("/");
     QPushButton * _point = new QPushButton(".");
 
+    modifiers->addButton(_plus, Controller::Button_Plus);
+    modifiers->addButton(_minus, Controller::Button_Minus);
+    modifiers->addButton(_mult, Controller::Button_Multiply);
+    modifiers->addButton(_div, Controller::Button_Divide);
+    modifiers->addButton(_point, Controller::Button_Dot);
+    modifiers->addButton(_equals, Controller::Button_Equal);
+
+    connect(modifiers, SIGNAL(buttonClicked(int)), this, SLOT(writeOnScreen(int)));
+
     QComboBox * base = new QComboBox;
+    base->addItem("Hex");
     base->addItem("Dec");
     base->addItem("Bin");
-    base->addItem("Hex");
+
+    controller.setBase(Controller::Dec);
+    base->setCurrentText("Dec");
+    changeBase(QString("Dec"));
+
+    connect(base, SIGNAL(currentIndexChanged(QString)), this, SLOT(changeBase(QString)));
 
     QLabel * baseLabel = new QLabel("Base");
 
@@ -134,7 +153,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mainLayout->addWidget(clear);
     mainLayout->addWidget(quit);
 
-
+    connect(clear, SIGNAL(clicked(bool)), this, SLOT(clearScreen()));
+    connect(quit, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 }
 
@@ -148,23 +168,68 @@ void MainWindow::about() {
                 tr("Calculatrice<br/>(c) 2019 Lauren Rolan"));
 }
 
-
-void MainWindow::evaluate()
+void MainWindow::writeOnScreen(int index)
 {
-
+    controller.command((Controller::ButtonID) index);
+    screen->setText(controller.getText());
 }
 
-void MainWindow::writeOnScreen()
+void MainWindow::clearScreen()
 {
-
+    screen->setText("");
 }
 
-void MainWindow::clear()
+void MainWindow::changeBase(QString base)
 {
+    if(base == QString("Bin")) {
+        numbers->button(2)->setDisabled(true);
+        numbers->button(3)->setDisabled(true);
+        numbers->button(4)->setDisabled(true);
+        numbers->button(5)->setDisabled(true);
+        numbers->button(6)->setDisabled(true);
+        numbers->button(7)->setDisabled(true);
+        numbers->button(8)->setDisabled(true);
+        numbers->button(9)->setDisabled(true);
+        numbers->button(10)->setDisabled(true);
+        numbers->button(11)->setDisabled(true);
+        numbers->button(12)->setDisabled(true);
+        numbers->button(13)->setDisabled(true);
+        numbers->button(14)->setDisabled(true);
+        numbers->button(15)->setDisabled(true);
+        controller.setBase(Controller::Bin);
+    } else if (base == QString("Dec")) {
+        numbers->button(2)->setDisabled(false);
+        numbers->button(3)->setDisabled(false);
+        numbers->button(4)->setDisabled(false);
+        numbers->button(5)->setDisabled(false);
+        numbers->button(6)->setDisabled(false);
+        numbers->button(7)->setDisabled(false);
+        numbers->button(8)->setDisabled(false);
+        numbers->button(9)->setDisabled(false);
 
-}
+        numbers->button(10)->setDisabled(true);
+        numbers->button(11)->setDisabled(true);
+        numbers->button(12)->setDisabled(true);
+        numbers->button(13)->setDisabled(true);
+        numbers->button(14)->setDisabled(true);
+        numbers->button(15)->setDisabled(true);
+        controller.setBase(Controller::Dec);
+    } else if (base == QString("Hex")) {
+        numbers->button(2)->setDisabled(false);
+        numbers->button(3)->setDisabled(false);
+        numbers->button(4)->setDisabled(false);
+        numbers->button(5)->setDisabled(false);
+        numbers->button(6)->setDisabled(false);
+        numbers->button(7)->setDisabled(false);
+        numbers->button(7)->setDisabled(false);
+        numbers->button(9)->setDisabled(false);
 
-void MainWindow::changeBase()
-{
-
+        numbers->button(10)->setDisabled(false);
+        numbers->button(11)->setDisabled(false);
+        numbers->button(12)->setDisabled(false);
+        numbers->button(13)->setDisabled(false);
+        numbers->button(14)->setDisabled(false);
+        numbers->button(15)->setDisabled(false);
+        controller.setBase(Controller::Hex);
+    }
 }

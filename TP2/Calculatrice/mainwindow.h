@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QMenuBar>
+#include <QLineEdit>
+#include <QButtonGroup>
+#include "Controller.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,13 +21,15 @@ public:
 
 private slots:
     void about();
-    void evaluate();
-    void writeOnScreen();
-    void clear();
-    void changeBase();
+    void writeOnScreen(int index);
+    void clearScreen();
+    void changeBase(QString base);
 
 private:
     Ui::MainWindow *ui;
+    QLineEdit * screen;
+    QButtonGroup * numbers;
+    Controller controller;
 };
 
 #endif // MAINWINDOW_H
