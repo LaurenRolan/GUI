@@ -1,3 +1,7 @@
+/* @author: Lauren Rolan
+ * @file: mainwindow.cpp
+ */
+
 #include "mainwindow.h"
 #include <QApplication>
 

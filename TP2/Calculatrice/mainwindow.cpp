@@ -1,3 +1,7 @@
+/* @author: Lauren Rolan
+ * @file: mainwindow.cpp
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Controller.h"
@@ -27,25 +31,36 @@ MainWindow::MainWindow(QWidget *parent) :
     QMenu * fichier = new QMenu(tr("&Fichier"), calcMenuBar);
     QMenu * options = new QMenu(tr("&Options"), calcMenuBar);
     QMenu * aide = new QMenu(tr("&Aide"), calcMenuBar);
+    QMenu * convertion = new QMenu(tr("&Convertion"), calcMenuBar);
 
     QAction * quitter = new QAction(tr("&Quitter"), fichier);
     QAction * aPropos = new QAction(tr("A &propos"), aide);
     QAction * suffixe = new QAction(tr("&Suffixe"), options);
+    QAction * showHex = new QAction(tr("Show &hex"), convertion);
+    QAction * showDec = new QAction(tr("Show &dec"), convertion);
+    QAction * showBin = new QAction(tr("Show &bin"), convertion);
 
     fichier->addAction(quitter);
     aide->addAction(aPropos);
     suffixe->setCheckable(true);
     options->addAction(suffixe);
+    convertion->addAction(showBin);
+    convertion->addAction(showDec);
+    convertion->addAction(showHex);
 
     calcMenuBar->addMenu(fichier);
     calcMenuBar->addMenu(options);
     calcMenuBar->addMenu(aide);
+    calcMenuBar->addMenu(convertion);
 
     showSuffix = false;
 
     connect(suffixe, SIGNAL(triggered()), this, SLOT(toggleSuffix()));
     connect(aPropos, SIGNAL(triggered()), this, SLOT(about()));
     connect(quitter, SIGNAL(triggered()), this, SLOT(close()));
+    connect(showBin, SIGNAL(triggered()), this, SLOT(popUpBin()));
+    connect(showDec, SIGNAL(triggered()), this, SLOT(popUpDec()));
+    connect(showHex, SIGNAL(triggered()), this, SLOT(popUpHex()));
 
     setMenuBar(calcMenuBar);
 
@@ -178,8 +193,12 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::about() {
-    QMessageBox::about(this, tr("A propos de Calculatrice"),
-                tr("Calculatrice<br/>(c) 2019 Lauren Rolan"));
+    QMessageBox about;
+    about.setText(tr("Calculatrice<br/>(c) 2019 Lauren Rolan"));
+    about.setWindowTitle(tr("A propos de Calculatrice"));
+    about.setIcon(QMessageBox::Information);
+    about.show();
+    about.exec();
 }
 
 void MainWindow::writeOnScreen(int index)
@@ -314,4 +333,27 @@ void MainWindow::keyPressEvent(QKeyEvent * event) {
          writeOnScreen(Controller::Button_Dot);
      else if (key == Qt::Key_Backspace)
          writeOnScreen(Controller::Button_Clear);
+}
+
+void MainWindow::popUpBin()
+{
+    int base = controller.base();
+    controller.setBase(Controller::Bin);
+    QMessageBox::about(this, "Valeur en binaire", controller.getText());
+    controller.setBase((Controller::Base) base);
+}
+void MainWindow::popUpDec()
+{
+    int base = controller.base();
+    controller.setBase(Controller::Dec);
+    QMessageBox::about(this, "Valeur en decimal", controller.getText());
+    controller.setBase((Controller::Base) base);
+}
+
+void MainWindow::popUpHex()
+{
+    int base = controller.base();
+    controller.setBase(Controller::Hex);
+    QMessageBox::about(this, "Valeur en hexadecimal", controller.getText());
+    controller.setBase((Controller::Base) base);
 }

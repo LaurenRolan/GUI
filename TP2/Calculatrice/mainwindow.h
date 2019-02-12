@@ -1,3 +1,7 @@
+/* @author: Lauren Rolan
+ * @file: mainwindow.cpp
+ */
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -25,6 +29,10 @@ private slots:
     void clearScreen();
     void changeBase(QString base);
     void toggleSuffix();
+
+    void popUpBin();
+    void popUpDec();
+    void popUpHex();
 
 private:
     Ui::MainWindow *ui;
