@@ -35,6 +35,8 @@ private:
 
     void setSuffix();
     void removeSuffix();
+
+    void keyPressEvent(QKeyEvent * event);
 };
 
 #endif // MAINWINDOW_H

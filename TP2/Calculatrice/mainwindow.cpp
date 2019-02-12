@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QShortcut>
+#include <QKeyEvent>
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,6 +17,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //To allow use of keyboard
+    setFocusPolicy(Qt::StrongFocus);
+
+    //To show the menu in the application
+    QCoreApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
+
     QMenuBar * calcMenuBar = new QMenuBar;
     QMenu * fichier = new QMenu(tr("&Fichier"), calcMenuBar);
     QMenu * options = new QMenu(tr("&Options"), calcMenuBar);
@@ -23,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QAction * quitter = new QAction(tr("&Quitter"), fichier);
     QAction * aPropos = new QAction(tr("A &propos"), aide);
-    QAction * suffixe = new QAction(tr("Suffixe"), options);
+    QAction * suffixe = new QAction(tr("&Suffixe"), options);
 
     fichier->addAction(quitter);
     aide->addAction(aPropos);
@@ -47,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     QLabel * calcLabel = new QLabel("Calculatrice");
     screen = new QLineEdit;
-
+    screen->setAlignment(Qt::AlignRight);
     screen->setReadOnly(true);
 
     mainLayout->addWidget(calcLabel);
@@ -116,7 +123,7 @@ MainWindow::MainWindow(QWidget *parent) :
     base->addItem("Bin");
 
     controller.setBase(Controller::Dec);
-    base->setCurrentText("Dec");
+    base->setCurrentIndex(1);
     changeBase(QString("Dec"));
 
     connect(base, SIGNAL(currentIndexChanged(QString)), this, SLOT(changeBase(QString)));
@@ -154,8 +161,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mainLayout->addLayout(keys);
 
-    QPushButton * clear = new QPushButton("C");
-    QPushButton * quit = new QPushButton("Quit");
+    QPushButton * clear = new QPushButton(tr("C"));
+    QPushButton * quit = new QPushButton(tr("Quit"));
 
     mainLayout->addWidget(clear);
     mainLayout->addWidget(quit);
@@ -186,7 +193,7 @@ void MainWindow::writeOnScreen(int index)
 
 void MainWindow::clearScreen()
 {
-    screen->setText("");
+    writeOnScreen(Controller::Button_Clear);
 }
 
 void MainWindow::removeSuffix()
@@ -254,7 +261,7 @@ void MainWindow::changeBase(QString base)
         numbers->button(5)->setDisabled(false);
         numbers->button(6)->setDisabled(false);
         numbers->button(7)->setDisabled(false);
-        numbers->button(7)->setDisabled(false);
+        numbers->button(8)->setDisabled(false);
         numbers->button(9)->setDisabled(false);
 
         numbers->button(10)->setDisabled(false);
@@ -278,4 +285,33 @@ void MainWindow::toggleSuffix() {
     } else {
         removeSuffix();
     }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent * event) {
+     int key = event->key();
+
+     if (key == Qt::Key_0 || key == Qt::Key_1)
+         writeOnScreen(key - 0x30);
+     //Only if Decimal or Hexadecimal
+     else if (key >= Qt::Key_2 && key <= Qt::Key_9 &&
+             (controller.base() == Controller::Dec ||
+              controller.base() == Controller::Hex))
+         writeOnScreen(key - 0x30);
+     //Only if Hexadecimal
+     else if (key >= Qt::Key_A && key <= Qt::Key_F && controller.base() == Controller::Hex)
+         writeOnScreen(key - 0x37);
+     else if (key == Qt::Key_Enter || key == Qt::Key_Return || key == Qt::Key_Equal)
+         writeOnScreen(Controller::Button_Equal);
+     else if (key == Qt::Key_Plus)
+         writeOnScreen(Controller::Button_Plus);
+     else if (key == Qt::Key_Minus)
+         writeOnScreen(Controller::Button_Minus);
+     else if (key == Qt::Key_Slash)
+         writeOnScreen(Controller::Button_Divide);
+     else if (key == Qt::Key_Asterisk)
+         writeOnScreen(Controller::Button_Multiply);
+     else if (key == Qt::Key_Period)
+         writeOnScreen(Controller::Button_Dot);
+     else if (key == Qt::Key_Backspace)
+         writeOnScreen(Controller::Button_Clear);
 }
