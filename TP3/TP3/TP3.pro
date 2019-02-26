@@ -13,12 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    dialog.cpp \
-    InvoiceModel.cpp
+    InvoiceModel.cpp \
+    mainwindow.cpp \
+    qpaint.cpp
 
 HEADERS  += \
-    dialog.h \
-    InvoiceModel.h
+    InvoiceModel.h \
+    mainwindow.h \
+    qpaint.h
 
 FORMS    += \
-    dialog.ui
+    mainwindow.ui
