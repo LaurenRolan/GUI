@@ -23,7 +23,7 @@
 #include <QtGui/QTableWidget>
 #include <QtGui/QToolBar>
 #include <QtGui/QWidget>
-#include "qpaint.h"
+#include <qpaint.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -64,22 +64,22 @@ public:
         newFileButton = new QAction(MainWindow);
         newFileButton->setObjectName(QString::fromUtf8("newFileButton"));
         QIcon icon;
-        icon.addFile(QString::fromUtf8("document-new.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/document-new.png"), QSize(), QIcon::Normal, QIcon::Off);
         newFileButton->setIcon(icon);
         openFileButton = new QAction(MainWindow);
         openFileButton->setObjectName(QString::fromUtf8("openFileButton"));
         QIcon icon1;
-        icon1.addFile(QString::fromUtf8("document-open.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon1.addFile(QString::fromUtf8(":/document-open.png"), QSize(), QIcon::Normal, QIcon::Off);
         openFileButton->setIcon(icon1);
         saveAsButton = new QAction(MainWindow);
         saveAsButton->setObjectName(QString::fromUtf8("saveAsButton"));
         QIcon icon2;
-        icon2.addFile(QString::fromUtf8("document-save-as.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon2.addFile(QString::fromUtf8(":/document-save-as.png"), QSize(), QIcon::Normal, QIcon::Off);
         saveAsButton->setIcon(icon2);
         saveButton = new QAction(MainWindow);
         saveButton->setObjectName(QString::fromUtf8("saveButton"));
         QIcon icon3;
-        icon3.addFile(QString::fromUtf8("document-save.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon3.addFile(QString::fromUtf8(":/document-save.png"), QSize(), QIcon::Normal, QIcon::Off);
         saveButton->setIcon(icon3);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
@@ -159,7 +159,7 @@ public:
         itemsLabel->setFont(font);
         zipCodeLabel = new QLabel(centralwidget);
         zipCodeLabel->setObjectName(QString::fromUtf8("zipCodeLabel"));
-        zipCodeLabel->setGeometry(QRect(90, 120, 67, 17));
+        zipCodeLabel->setGeometry(QRect(100, 120, 61, 17));
         cityLabel = new QLabel(centralwidget);
         cityLabel->setObjectName(QString::fromUtf8("cityLabel"));
         cityLabel->setGeometry(QRect(430, 120, 31, 17));
@@ -197,7 +197,6 @@ public:
         toolBar = new QToolBar(MainWindow);
         toolBar->setObjectName(QString::fromUtf8("toolBar"));
         MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
-        MainWindow->insertToolBarBreak(toolBar);
 
         menubar->addAction(menu_File->menuAction());
         toolBar->addAction(newFileButton);
@@ -220,9 +219,9 @@ public:
         QTableWidgetItem *___qtablewidgetitem = tableEdit->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QApplication::translate("MainWindow", "Description", 0, QApplication::UnicodeUTF8));
         QTableWidgetItem *___qtablewidgetitem1 = tableEdit->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QApplication::translate("MainWindow", "Unit (excl. taxes)", 0, QApplication::UnicodeUTF8));
+        ___qtablewidgetitem1->setText(QApplication::translate("MainWindow", "Quantit\303\251", 0, QApplication::UnicodeUTF8));
         QTableWidgetItem *___qtablewidgetitem2 = tableEdit->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QApplication::translate("MainWindow", "Nouvelle colonne", 0, QApplication::UnicodeUTF8));
+        ___qtablewidgetitem2->setText(QApplication::translate("MainWindow", "Unit (excl. taxes)", 0, QApplication::UnicodeUTF8));
         QTableWidgetItem *___qtablewidgetitem3 = tableEdit->horizontalHeaderItem(3);
         ___qtablewidgetitem3->setText(QApplication::translate("MainWindow", "Total (excl. taxes)", 0, QApplication::UnicodeUTF8));
         QTableWidgetItem *___qtablewidgetitem4 = tableEdit->verticalHeaderItem(0);

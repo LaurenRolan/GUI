@@ -117,12 +117,12 @@
     </column>
     <column>
      <property name="text">
-      <string>Unit (excl. taxes)</string>
+      <string>Quantité</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Nouvelle colonne</string>
+      <string>Unit (excl. taxes)</string>
      </property>
     </column>
     <column>
@@ -230,9 +230,9 @@
    <widget class="QLabel" name="zipCodeLabel">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>100</x>
       <y>120</y>
-      <width>67</width>
+      <width>61</width>
       <height>17</height>
      </rect>
     </property>
@@ -349,7 +349,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="newFileButton"/>
    <addaction name="openFileButton"/>
@@ -358,8 +358,8 @@
   </widget>
   <action name="newFileButton">
    <property name="icon">
-    <iconset>
-     <normaloff>document-new.png</normaloff>document-new.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/document-new.png</normaloff>:/document-new.png</iconset>
    </property>
    <property name="text">
     <string>&amp;New File</string>
@@ -367,8 +367,8 @@
   </action>
   <action name="openFileButton">
    <property name="icon">
-    <iconset>
-     <normaloff>document-open.png</normaloff>document-open.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/document-open.png</normaloff>:/document-open.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Open File</string>
@@ -376,8 +376,8 @@
   </action>
   <action name="saveAsButton">
    <property name="icon">
-    <iconset>
-     <normaloff>document-save-as.png</normaloff>document-save-as.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/document-save-as.png</normaloff>:/document-save-as.png</iconset>
    </property>
    <property name="text">
     <string>Save &amp;As</string>
@@ -385,8 +385,8 @@
   </action>
   <action name="saveButton">
    <property name="icon">
-    <iconset>
-     <normaloff>document-save.png</normaloff>document-save.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/document-save.png</normaloff>:/document-save.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -397,10 +397,12 @@
   <customwidget>
    <class>QPaint</class>
    <extends>QWidget</extends>
-   <header>qpaint.h</header>
+   <header location="global">qpaint.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
