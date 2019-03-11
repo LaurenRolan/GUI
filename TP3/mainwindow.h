@@ -38,6 +38,8 @@ private slots:
 
     void loadFromFile();
 
+    void updateFields();
+
 private:
     Ui::MainWindow *ui;
     QPaint * canvas;

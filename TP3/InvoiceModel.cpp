@@ -49,6 +49,23 @@ InvoiceModel::setCell(int row, int column, const QString & text) {
    emit notify();
 }
 
+void
+InvoiceModel::cleanAll() {
+  _firstname = "";
+  _lastname = "";
+  _addressLine1 = "";
+  _addressLine2 = "";
+  _zipcode = "";
+  _city = "";
+
+  for(int row = 0; row < 15; row++){
+      for(int col = 0; col < 4; col++){
+          _cells[row][col] = "";
+      }
+  }
+    emit notify();
+}
+
 const QString &
 InvoiceModel::lastname() const {
    return _lastname;

@@ -24,12 +24,25 @@ MainWindow::MainWindow(QWidget *parent) :
     setMenuBar(menuBar);
 
     connect(ui->saveAsButton, SIGNAL(triggered()), this, SLOT(saveOnCSV()));
+    connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(model->cleanAll()));
+    connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(updateFields()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::updateFields()
+{
+    ui->firstNameEdit->setText("");
+    ui->lastNameEdit->setText("");
+    ui->cityEdit->setText("");
+    ui->zipCodeEdit->setText("");
+    ui->address1Edit->setText("");
+    ui->address2Edit->setText("");
+}
+
 
 void MainWindow::on_address1Edit_textEdited(const QString &arg1)
 {

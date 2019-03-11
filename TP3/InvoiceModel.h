@@ -46,6 +46,8 @@ public slots:
   
   void setCell( int row, int column, const QString & text );
 
+  void cleanAll();
+
 signals:
 
   void notify();
