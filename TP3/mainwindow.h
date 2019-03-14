@@ -38,7 +38,7 @@ private slots:
 
     void loadFromFile();
 
-    void updateFields();
+    void cleanFields();
 
 private:
     Ui::MainWindow *ui;

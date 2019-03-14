@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->saveAsButton, SIGNAL(triggered()), this, SLOT(saveOnCSV()));
     connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(model->cleanAll()));
-    connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(updateFields()));
+    connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(cleanFields()));
 }
 
 MainWindow::~MainWindow()
@@ -33,7 +33,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::updateFields()
+void MainWindow::cleanFields()
 {
     ui->firstNameEdit->setText("");
     ui->lastNameEdit->setText("");

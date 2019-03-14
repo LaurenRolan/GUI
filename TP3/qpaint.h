@@ -19,6 +19,7 @@ public slots:
 
 private:
     InvoiceModel * _invoiceModel;
+    QPainter * _canvas;
 };
 
 #endif // QPAINT_H

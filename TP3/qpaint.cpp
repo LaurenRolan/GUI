@@ -13,11 +13,13 @@ void QPaint::setInvoiceModel(InvoiceModel * invoiceModel)
 
 void QPaint::paintEvent(QPaintEvent *)
 {
-    auto _canvas = new QPainter(this);
+    _canvas = new QPainter(this);
     _canvas->setRenderHint(QPainter::Antialiasing);
     _canvas->setPen(Qt::black);
 
     QRect info(QPoint(10, 10), QPoint(310, 90));
+
+    //Cette partie, quand décomenté, retourne un SEGFAULT
 
 /*
     _canvas->drawText(info, Qt::AlignLeft, _invoiceModel->firstname());
