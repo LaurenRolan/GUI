@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(tr("Invoice v1.0"));
 
-    canvas = new QPaint(this);
+    canvas = ui->widget;
     model = new InvoiceModel();
     canvas->setInvoiceModel(model);
 

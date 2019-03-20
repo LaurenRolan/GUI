@@ -9,6 +9,12 @@ QPaint::QPaint(QWidget *parent) : QWidget(parent)
 void QPaint::setInvoiceModel(InvoiceModel * invoiceModel)
 {
     _invoiceModel = invoiceModel;
+    _invoiceModel->setFirstname("");
+    _invoiceModel->setLastname("");
+    _invoiceModel->setAddressLine1("");
+    _invoiceModel->setAddressLine2("");
+    _invoiceModel->setCity("");
+    _invoiceModel->setZipcode("");
 }
 
 void QPaint::paintEvent(QPaintEvent *)
@@ -19,17 +25,13 @@ void QPaint::paintEvent(QPaintEvent *)
 
     QRect info(QPoint(10, 10), QPoint(310, 90));
 
-    //Cette partie, quand décomenté, retourne un SEGFAULT
-
-/*
-    _canvas->drawText(info, Qt::AlignLeft, _invoiceModel->firstname());
-    _canvas->drawText(info, Qt::AlignLeft, _invoiceModel->lastname());
-
-    _canvas->drawText(info, Qt::AlignLeft, _invoiceModel->addressLine1() + "\n");
-    _canvas->drawText(info, Qt::AlignLeft, _invoiceModel->addressLine2() + "\n");
-    _canvas->drawText(info, Qt::AlignLeft, _invoiceModel->city());
-    _canvas->drawText(info, Qt::AlignLeft, _invoiceModel->zipcode());
-*/
+    if(_invoiceModel != nullptr) {
+        QString text = " " + _invoiceModel->firstname() + " " +
+                _invoiceModel->lastname() + "\n " + _invoiceModel->addressLine1() + "\n " +
+                _invoiceModel->addressLine2() + "\n " + _invoiceModel->city() + "\t" +
+                _invoiceModel->zipcode();
+        _canvas->drawText(info, Qt::AlignLeft, text);
+    }
 
     _canvas->drawRect(info);
 
