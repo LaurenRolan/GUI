@@ -38,27 +38,49 @@ void QPaint::paintEvent(QPaintEvent *)
     QRect items(QPoint(10, 100), QPoint(110, 550));
     _canvas->drawText(items, Qt::AlignHCenter, tr("Item"));
     _canvas->drawRect(items);
+    for(int i = 0; i < 15; i++) {
+        _canvas->drawText(QPoint(15, 135 + i * 25) ,_invoiceModel->cell(i, 0));
+    }
 
     QRect quantity(QPoint(110, 100), QPoint(210, 550));
     _canvas->drawText(quantity, Qt::AlignHCenter, tr("Quantity"));
     _canvas->drawRect(quantity);
+    for(int i = 0; i < 15; i++) {
+        _canvas->drawText(QPoint(115, 135 + i * 25) ,_invoiceModel->cell(i, 1));
+    }
 
     QRect unitPrice(QPoint(210, 100), QPoint(310, 550));
     _canvas->drawText(unitPrice, Qt::AlignHCenter, tr("Unit price"));
     _canvas->drawRect(unitPrice);
+    for(int i = 0; i < 15; i++) {
+        _canvas->drawText(QPoint(215, 135 + i * 25) ,_invoiceModel->cell(i, 2));
+    }
 
     QRect price(QPoint(310, 100), QPoint(410, 550));
     _canvas->drawText(price, Qt::AlignHCenter, tr("Price"));
     _canvas->drawRect(price);
+    for(int i = 0; i < 15; i++) {
+        _canvas->drawText(QPoint(315, 135 + i * 25) ,_invoiceModel->cell(i, 3));
+    }
 
+    QString taxesTotal = getTaxes();
     _canvas->drawText(QPoint(200, 570), tr("Taxes"));
     QRect taxes(QPoint(310, 555), QPoint(410, 575));
+    _canvas->drawText(taxes,  Qt::AlignHCenter, taxesTotal);
     _canvas->drawRect(taxes);
 
     _canvas->drawLine(QPoint(10, 120), QPoint(410, 120));
 
+    QString totalValue = getTotal();
     _canvas->drawText(QPoint(200, 595), tr("Total (w. taxes)"));
     QRect total(QPoint(310, 580), QPoint(410, 600));
+    _canvas->drawText(total,  Qt::AlignHCenter, totalValue);
     _canvas->drawRect(total);
+}
 
+QString QPaint::getTaxes() {
+    return QString("");
+}
+QString QPaint::getTotal() {
+    return QString("");
 }

@@ -12,6 +12,8 @@ public:
     explicit QPaint(QWidget *parent = 0);
     void setInvoiceModel(InvoiceModel * invoiceModel);
     void paintEvent(QPaintEvent *);
+    QString getTaxes();
+    QString getTotal();
 
 signals:
 
