@@ -49,6 +49,23 @@ InvoiceModel::setCell(int row, int column, const QString & text) {
    emit notify();
 }
 
+const QString &
+InvoiceModel::total() const {
+    double total = 0;
+    for(int i = 0; i < 15; i++) {
+        if(!QString::compare(cell(i, 3), QString(""))) {
+            total += cell(i, 3).toDouble();
+        }
+    }
+    total += taxes().toDouble();
+    return QString::number(total,'g', 2);
+}
+
+const QString &
+InvoiceModel::taxes() const {
+    return QString("0");
+}
+
 void
 InvoiceModel::cleanAll() {
   _firstname = "";

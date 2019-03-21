@@ -30,6 +30,10 @@ public:
 
   const QString & cell( int row, int col ) const;
 
+  const QString & total() const;
+
+  const QString & taxes() const;
+
 public slots:
 
   void setLastname( const QString & lastname );

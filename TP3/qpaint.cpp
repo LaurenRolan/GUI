@@ -63,7 +63,7 @@ void QPaint::paintEvent(QPaintEvent *)
         _canvas->drawText(QPoint(315, 135 + i * 25) ,_invoiceModel->cell(i, 3));
     }
 
-    QString taxesTotal = getTaxes();
+    QString taxesTotal = _invoiceModel->total();
     _canvas->drawText(QPoint(200, 570), tr("Taxes"));
     QRect taxes(QPoint(310, 555), QPoint(410, 575));
     _canvas->drawText(taxes,  Qt::AlignHCenter, taxesTotal);
@@ -71,16 +71,9 @@ void QPaint::paintEvent(QPaintEvent *)
 
     _canvas->drawLine(QPoint(10, 120), QPoint(410, 120));
 
-    QString totalValue = getTotal();
+    QString totalValue = _invoiceModel->taxes();
     _canvas->drawText(QPoint(200, 595), tr("Total (w. taxes)"));
     QRect total(QPoint(310, 580), QPoint(410, 600));
     _canvas->drawText(total,  Qt::AlignHCenter, totalValue);
     _canvas->drawRect(total);
-}
-
-QString QPaint::getTaxes() {
-    return QString("");
-}
-QString QPaint::getTotal() {
-    return QString("");
 }
