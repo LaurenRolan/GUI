@@ -32,7 +32,7 @@ private slots:
 
     void on_tableEdit_cellChanged(int row, int column);
 
-    void saveOnCSV();
+    void saveAs();
 
     void saveToFile();
 
@@ -44,6 +44,7 @@ private:
     Ui::MainWindow *ui;
     QPaint * canvas;
     InvoiceModel * model;
+    QString filename;
 };
 
 #endif // MAINWINDOW_H

@@ -118,4 +118,49 @@ InvoiceModel::cell(int row, int column) const {
    return _cells[row][column];
 }
 
+QDataStream &
+operator<<(QDataStream & ds, const InvoiceModel& im) {
+    ds << im.firstname();
+    ds << im.lastname();
+    ds << im.addressLine1();
+    ds << im.addressLine2();
+    ds << im.zipcode();
+    ds << im.city();
+    for(int i = 0; i < 15; i++) {
+        ds << im.cell(i, 0);
+        ds << im.cell(i, 1);
+        ds << im.cell(i, 2);
+        ds << im.cell(i, 3);
+    }
+    return ds;
+}
+
+QDataStream &
+operator>>(QDataStream & ds, InvoiceModel& im) {
+    QString buffer;
+    ds >> buffer;
+    im.setFirstname(buffer);
+    ds >> buffer;
+    im.setLastname(buffer);
+    ds >> buffer;
+    im.setAddressLine1(buffer);
+    ds >> buffer;
+    im.setAddressLine2(buffer);
+    ds >> buffer;
+    im.setZipcode(buffer);
+    ds >> buffer;
+    im.setCity(buffer);
+    for(int i = 0; i < 15; i++) {
+        ds >> buffer;
+        im.setCell(i, 0, buffer);
+        ds >> buffer;
+        im.setCell(i, 1, buffer);
+        ds >> buffer;
+        im.setCell(i, 2, buffer);
+        ds >> buffer;
+        im.setCell(i, 3, buffer);
+
+    }
+    return ds;
+}
 

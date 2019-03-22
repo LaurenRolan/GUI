@@ -1,5 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "InvoiceModel.h"
@@ -23,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menuBar->addMenu(fileMenu);
     setMenuBar(menuBar);
 
-    connect(ui->saveAsButton, SIGNAL(triggered()), this, SLOT(saveOnCSV()));
+    connect(ui->saveAsButton, SIGNAL(triggered()), this, SLOT(saveAs()));
     connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(model->cleanAll()));
     connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(cleanFields()));
 }
@@ -86,29 +89,56 @@ void MainWindow::on_tableEdit_cellChanged(int row, int column)
     canvas->update();
 }
 
-void MainWindow::saveOnCSV()
+void MainWindow::saveAs()
 {
-    std::ofstream myfile;
-    myfile.open("data.csv");
-    myfile << model->firstname().toStdString() << " , " << model->lastname().toStdString() << std::endl;
-    myfile << model->addressLine1().toStdString() << " , " << model->addressLine2().toStdString() << std::endl;
-    myfile << model->zipcode().toStdString() << " , " << model->city().toStdString() << std::endl;
-
-    for(int i = 0; i < 15; i++)
-    {
-        myfile << model->cell(i, 0).toStdString() << " , " << model->cell(i, 1).toStdString() << " , ";
-        myfile << model->cell(i, 2).toStdString() << " , " << model->cell(i, 3).toStdString() << std::endl;
-    }
-    myfile.close();
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save Invoice"), "",
+            tr("Invoice (*.inv);;All Files (*)"));
+    if (fileName.isEmpty())
+            return;
+        else {
+            QFile file(fileName);
+            if (!file.open(QIODevice::WriteOnly)) {
+                QMessageBox::information(this, tr("Unable to open file"),
+                    file.errorString());
+                return;
+            }
+            QDataStream out(&file);
+            out.setVersion(QDataStream::Qt_4_5);
+            out << model->firstname(); //TODO the rest
+        }
 }
+
 
 
 void MainWindow::loadFromFile()
 {
-
+    QString fileName = QFileDialog::getOpenFileName(this,
+           tr("Open Invoice"), "",
+           tr("Invoice (*.inv);;All Files (*)"));
+    if (fileName.isEmpty())
+            return;
+    else {
+        filename = fileName;
+        saveToFile();
+    }
 }
 
 void MainWindow::saveToFile()
 {
+    QFile file(filename);
 
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(this, tr("Unable to open file"),
+            file.errorString());
+        return;
+    }
+
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_4_5);
+    model->cleanAll();
+    QString buffer;
+    in >> buffer;
+    model->setFirstname(buffer);
+    update();
 }

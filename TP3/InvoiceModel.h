@@ -34,6 +34,9 @@ public:
 
   const QString & taxes() const;
 
+  friend QDataStream & operator<<(QDataStream & ds, const InvoiceModel& im);
+  friend QDataStream & operator>>(QDataStream & ds, InvoiceModel& im);
+
 public slots:
 
   void setLastname( const QString & lastname );
