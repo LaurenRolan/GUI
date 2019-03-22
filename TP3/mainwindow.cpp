@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->saveAsButton, SIGNAL(triggered()), this, SLOT(saveAs()));
     connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(model->cleanAll()));
     connect(ui->newFileButton, SIGNAL(triggered()), this, SLOT(cleanFields()));
+    connect(ui->saveButton, SIGNAL(triggered()), this, SLOT(saveToFile()));
+    connect(ui->openFileButton, SIGNAL(triggered()), this, SLOT(loadFromFile()));
 }
 
 MainWindow::~MainWindow()
@@ -94,6 +96,7 @@ void MainWindow::saveAs()
     QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save Invoice"), "",
             tr("Invoice (*.inv);;All Files (*)"));
+    fileName += ".inv";
     if (fileName.isEmpty())
             return;
         else {
@@ -106,6 +109,18 @@ void MainWindow::saveAs()
             QDataStream out(&file);
             out.setVersion(QDataStream::Qt_4_5);
             out << model->firstname(); //TODO the rest
+            out << model->lastname();
+            out << model->addressLine1();
+            out << model->addressLine2();
+            out << model->zipcode();
+            out << model->city();
+
+            for(int i = 0; i < 15; i++) {
+                out << model->cell(i, 0);
+                out << model->cell(i, 1);
+                out << model->cell(i, 2);
+                out << model->cell(i, 3);
+            }
         }
 }
 
@@ -126,6 +141,10 @@ void MainWindow::loadFromFile()
 
 void MainWindow::saveToFile()
 {
+    if(filename.isEmpty()) {
+        saveAs();
+        return;
+    }
     QFile file(filename);
 
     if (!file.open(QIODevice::ReadOnly)) {
@@ -138,7 +157,41 @@ void MainWindow::saveToFile()
     in.setVersion(QDataStream::Qt_4_5);
     model->cleanAll();
     QString buffer;
+
     in >> buffer;
     model->setFirstname(buffer);
-    update();
+    ui->firstNameEdit->setText(buffer);
+
+    in >> buffer;
+    model->setLastname(buffer);
+    ui->lastNameEdit->setText(buffer);
+
+    in >> buffer;
+    model->setAddressLine1(buffer);
+    ui->address1Edit->setText(buffer);
+
+    in >> buffer;
+    model->setAddressLine2(buffer);
+    ui->address2Edit->setText(buffer);
+
+    in >> buffer;
+    model->setZipcode(buffer);
+    ui->zipCodeEdit->setText(buffer);
+
+    in >> buffer;
+    model->setCity(buffer);
+    ui->cityEdit->setText(buffer);
+
+    for(int i = 0; i < 15; i++) {
+        in >> buffer;
+        model->setCell(i, 0, buffer);
+        in >> buffer;
+        model->setCell(i, 1, buffer);
+        in >> buffer;
+        model->setCell(i, 2, buffer);
+        in >> buffer;
+        model->setCell(i, 3, buffer);
+    }
+
+    canvas->update();
 }

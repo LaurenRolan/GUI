@@ -1,8 +1,6 @@
 #include "qpaint.h"
 #include <iostream>
 
-//https://doc.qt.io/qt-5/qtwidgets-tutorials-addressbook-part6-example.html
-
 QPaint::QPaint(QWidget *parent) : QWidget(parent)
 { }
 
