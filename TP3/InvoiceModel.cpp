@@ -159,7 +159,6 @@ operator>>(QDataStream & ds, InvoiceModel& im) {
         im.setCell(i, 2, buffer);
         ds >> buffer;
         im.setCell(i, 3, buffer);
-
     }
     return ds;
 }

@@ -40,6 +40,8 @@ private slots:
 
     void cleanFields();
 
+    void updateFields();
+
 private:
     Ui::MainWindow *ui;
     QPaint * canvas;

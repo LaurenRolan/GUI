@@ -46,8 +46,39 @@ void MainWindow::cleanFields()
     ui->zipCodeEdit->setText("");
     ui->address1Edit->setText("");
     ui->address2Edit->setText("");
+
+    for(int i = 0; i < 15; i++) {
+        QTableWidgetItem * item = ui->tableEdit->item(i, 0);
+        if(item) item->setText("");
+        item = ui->tableEdit->item(i, 1);
+        if(item) item->setText("");
+        item = ui->tableEdit->item(i, 2);
+        if(item) item->setText("");
+        item = ui->tableEdit->item(i, 3);
+        if(item) item->setText("");
+    }
 }
 
+void MainWindow::updateFields() {
+    ui->firstNameEdit->setText(model->firstname());
+    ui->lastNameEdit->setText(model->lastname());
+    ui->cityEdit->setText(model->city());
+    ui->zipCodeEdit->setText(model->zipcode());
+    ui->address1Edit->setText(model->addressLine1());
+    ui->address2Edit->setText(model->addressLine2());
+
+    for(int i = 0; i < 15; i++) {
+        QTableWidgetItem * item = ui->tableEdit->item(i, 0);
+        if(item) item->setText(model->cell(i, 0));
+        item = ui->tableEdit->item(i, 1);
+        if(item) { item->setText(model->cell(i, 1)); std::cerr << model->cell(i, 1).toStdString(); } //Never enters
+        item = ui->tableEdit->item(i, 2);
+        if(item) item->setText(model->cell(i, 2));
+        item = ui->tableEdit->item(i, 3);
+        if(item) item->setText(model->cell(i, 3));
+    }
+
+}
 
 void MainWindow::on_address1Edit_textEdited(const QString &arg1)
 {
@@ -108,23 +139,9 @@ void MainWindow::saveAs()
             }
             QDataStream out(&file);
             out.setVersion(QDataStream::Qt_4_5);
-            out << model->firstname(); //TODO the rest
-            out << model->lastname();
-            out << model->addressLine1();
-            out << model->addressLine2();
-            out << model->zipcode();
-            out << model->city();
-
-            for(int i = 0; i < 15; i++) {
-                out << model->cell(i, 0);
-                out << model->cell(i, 1);
-                out << model->cell(i, 2);
-                out << model->cell(i, 3);
-            }
+            out << *model;
         }
 }
-
-
 
 void MainWindow::loadFromFile()
 {
@@ -156,42 +173,9 @@ void MainWindow::saveToFile()
     QDataStream in(&file);
     in.setVersion(QDataStream::Qt_4_5);
     model->cleanAll();
-    QString buffer;
 
-    in >> buffer;
-    model->setFirstname(buffer);
-    ui->firstNameEdit->setText(buffer);
+    in >> *model;
 
-    in >> buffer;
-    model->setLastname(buffer);
-    ui->lastNameEdit->setText(buffer);
-
-    in >> buffer;
-    model->setAddressLine1(buffer);
-    ui->address1Edit->setText(buffer);
-
-    in >> buffer;
-    model->setAddressLine2(buffer);
-    ui->address2Edit->setText(buffer);
-
-    in >> buffer;
-    model->setZipcode(buffer);
-    ui->zipCodeEdit->setText(buffer);
-
-    in >> buffer;
-    model->setCity(buffer);
-    ui->cityEdit->setText(buffer);
-
-    for(int i = 0; i < 15; i++) {
-        in >> buffer;
-        model->setCell(i, 0, buffer);
-        in >> buffer;
-        model->setCell(i, 1, buffer);
-        in >> buffer;
-        model->setCell(i, 2, buffer);
-        in >> buffer;
-        model->setCell(i, 3, buffer);
-    }
-
+    updateFields();
     canvas->update();
 }
