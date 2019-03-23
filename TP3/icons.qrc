@@ -4,6 +4,7 @@
     <file>images/document-open.png</file>
     <file>images/document-save.png</file>
     <file>images/document-save-as.png</file>
+    <file>invoice_fr_FR.qm</file>
 </qresource>
 </RCC>
 

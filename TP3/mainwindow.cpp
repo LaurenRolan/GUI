@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->retranslateUi(this);
     setWindowTitle(tr("Invoice v1.0"));
 
     canvas = ui->widget;
