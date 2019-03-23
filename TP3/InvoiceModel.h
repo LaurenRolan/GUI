@@ -16,6 +16,8 @@ class InvoiceModel : public QObject {
 
 public:
 
+  InvoiceModel();
+
   const QString & lastname( ) const;
 
   const QString & firstname( ) const;
@@ -30,9 +32,9 @@ public:
 
   const QString & cell( int row, int col ) const;
 
-  const QString & total() const;
+  const QString & total();
 
-  const QString & taxes() const;
+  const QString & taxes();
 
   friend QDataStream & operator<<(QDataStream & ds, const InvoiceModel& im);
   friend QDataStream & operator>>(QDataStream & ds, InvoiceModel& im);
@@ -68,6 +70,8 @@ private:
   QString _zipcode;
   QString _city;
   QString _cells[15][4];
+  QString _taxes;
+  QString _total;
 };
 
 #endif

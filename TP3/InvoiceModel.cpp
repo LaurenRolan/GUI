@@ -7,6 +7,9 @@
 
 #include "InvoiceModel.h"
 
+InvoiceModel::InvoiceModel() : _taxes(QString("0")),
+    _total(QString("0")) { }
+
 void
 InvoiceModel::setLastname(const QString & lastname) {
    _lastname = lastname;
@@ -50,20 +53,21 @@ InvoiceModel::setCell(int row, int column, const QString & text) {
 }
 
 const QString &
-InvoiceModel::total() const {
+InvoiceModel::total() {
     double total = 0;
     for(int i = 0; i < 15; i++) {
-        if(!QString::compare(cell(i, 3), QString(""))) {
+        if(QString::compare(cell(i, 3), QString("")) != 0) {
             total += cell(i, 3).toDouble();
         }
     }
     total += taxes().toDouble();
-    return QString::number(total,'g', 2);
+    _total = QString::number(total,'g', 2);
+    return _total;
 }
 
 const QString &
-InvoiceModel::taxes() const {
-    return QString("0");
+InvoiceModel::taxes() {
+    return _taxes;
 }
 
 void
